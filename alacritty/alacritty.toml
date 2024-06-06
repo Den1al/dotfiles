@@ -1,0 +1,11 @@
+[window]
+decorations = "None"
+padding = { x = 5, y = 5}
+dynamic_padding = true
+opacity = 0.4
+blur = true
+option_as_alt = "Both" 
+
+[font]
+size = 16.0
+bold = {family ="Hack Nerd Font Mono", style="Regular"}
