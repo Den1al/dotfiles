@@ -10,8 +10,8 @@ stow --target .
 
 ```bash
 # Leaving a machine
-brew leaves > leaves.txt
+brew leaves > homebrew/leaves.txt
 
 # Fresh installation
-xargs brew install < leaves.txt
+xargs brew install < homebrew/leaves.txt
 ```
