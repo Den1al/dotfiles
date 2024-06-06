@@ -9,7 +9,15 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "tsserver", "gopls", "golangci_lint_ls" },
+				ensure_installed = {
+					"lua_ls",
+					"tsserver",
+					"gopls",
+					"golangci_lint_ls",
+					"marksman",
+					"pylsp",
+					"bashls",
+				},
 			})
 		end,
 	},
@@ -31,6 +39,7 @@ return {
 			lspconfig.pylsp.setup({})
 			lspconfig.marksman.setup({})
 			lspconfig.tsserver.setup({})
+			lspconfig.bashls.setup({})
 
 			lspconfig.gopls.setup({
 				cmd = { "gopls" },
