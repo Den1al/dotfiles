@@ -1,0 +1,2 @@
+services:
+  "gitlab.com": "gitlab:gitlab.com"
