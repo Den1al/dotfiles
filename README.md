@@ -14,4 +14,8 @@ brew leaves > homebrew/leaves.txt
 
 # Fresh installation
 xargs brew install < homebrew/leaves.txt
+
+# Edit $HOME/.zprofile
+source $HOME/.config/zsh/.zshrc
+
 ```
