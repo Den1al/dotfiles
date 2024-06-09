@@ -17,7 +17,6 @@ brew leaves > homebrew/leaves.txt
 
 # Fresh installation
 xargs brew install < homebrew/leaves.txt
-
 ```
 
 ### Uninstall with stow:
