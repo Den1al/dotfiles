@@ -74,3 +74,13 @@ gd - go to definition
 ```bash
 <C-n> - render markdown
 ```
+
+## Window Resize
+
+```bash
+<S-h> - change width left
+<S-l> - change width right
+<+>   - change width up
+<->   - change width down
+
+```
