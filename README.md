@@ -1,5 +1,11 @@
 # ✨ My dotfiles ✨
 
+> Current Stack
+
+- kitty
+- tmux
+- neovim
+
 ### Install with stow:
 
 ```bash
@@ -23,4 +29,10 @@ xargs brew install < homebrew/leaves.txt
 
 ```bash
 stow --delete .
+```
+
+### Refresh Stow
+
+```bash
+./refresh.sh
 ```
