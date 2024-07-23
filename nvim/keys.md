@@ -69,12 +69,6 @@ gd - go to definition
 <leader>nh - noice history (telescope)
 ```
 
-## Glow
-
-```bash
-<C-n> - render markdown
-```
-
 ## Window Resize
 
 ```bash
@@ -83,4 +77,14 @@ gd - go to definition
 <+>   - change width up
 <->   - change width down
 
+```
+
+## Anthropic
+
+```bash
+<C-c> - code completions actions
+<leader>c - code completions toggle
+ga - add to code completion
+
+cc is expanded to CodeCompanion
 ```
