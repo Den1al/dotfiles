@@ -3,26 +3,61 @@
 ## Harpoon
 
 ```bash
-<leader>ft - harpoon telescope
+<leader>ft - harpoon telescope (c-d to delete)
 <leader>a - harpoon add
 
 <leader>1 - harpoon#1
 <leader>2 - harpoon#2
 <leader>3 - harpoon#3
+<leader>4 - harpoon#4
+
 ```
 
-## Lazygit
+## Git
+
+### LazyGit
 
 ```bash
 <leader> lg - show lazygit
 ```
 
+### GitSigns
+
+```bash
+]c - next hunk
+[c - prev hunk
+
+<leader>hs - stage hunk
+<leader>hr - reset hunk
+<leader>hu - undo stage hunk
+
+<leader>hS - stage buffer
+<leader>hR - reset buffer
+<leader>hp - preview hunk
+
+<leader>hb - blame line
+<leader>tb - toggle current line blame
+<leader>hD - diff this
+<leader>td - toggle deleted
+
+ih - select hunk
+```
+
 ## LSP
 
 ```bash
+<leader>rn - rename
+<leader>ca - code action
+gd - go to definition
+gr - go to references
+gI - go to implementation
+
+<leader>D - type definition
+<leader>ds - LSP document symbols
+<leader>ws - LSP workspace symbols
+
 K - hover on buffer
 gd - go to definition
-<leader>ca - code action
 <leader>gf - format document
 ```
 
@@ -55,8 +90,6 @@ gd - go to definition
 
 ```bash
 <leader>xx - trouble toggle
-<leader>xw - workspace diagnostics
-<leader>xd - document diagnostics
 <leader>xq - quickfix
 <leader>xl - trouble loclist
 <leader>xr - trouble lsp refs
@@ -79,7 +112,7 @@ gd - go to definition
 
 ```
 
-## Anthropic
+## AI Companion
 
 ```bash
 <C-c> - code completions actions
