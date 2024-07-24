@@ -1,5 +1,23 @@
 # Key Bindings
 
+function lasla() {
+return 'aaaa';
+}
+
+## Surround
+
+    Old text                    Command         New text
+
+---
+
+    surr*ound_words             ysiw)           (surround_words)
+    *make strings               ys$"            "make strings"
+    [delete ar*ound me!]        ds]             delete around me!
+    remove <b>HTML t*ags</b>    dst             remove HTML tags
+    'change quot*es'            cs'"            "change quotes"
+    <b>or tag* types</b>        csth1<CR>       <h1>or tag types</h1>
+    delete(functi*on calls)     dsf             function calls
+
 ## Harpoon
 
 ```bash
@@ -61,7 +79,27 @@ gd - go to definition
 <leader>gf - format document
 ```
 
-## NeoTree
+## File System
+
+### Oil
+
+> use `-` to open oil
+
+```bash
+
+<C-s> - open in new vsplit
+<C-h> - open in new hsplit
+<C-p> - toggle preview
+<C-l> - refresh view
+
+gx - open external
+
+"-" - parent
+"_" - open cwd
+"`" - cwd
+```
+
+### NeoTree
 
 ```bash
 <C-n> - show filesystem
@@ -114,10 +152,11 @@ gd - go to definition
 
 ## AI Companion
 
+> cc is expanded to CodeCompanion
+
 ```bash
-<C-c> - code completions actions
+# <C-c> - code completions actions
 <leader>c - code completions toggle
 ga - add to code completion
 
-cc is expanded to CodeCompanion
 ```
