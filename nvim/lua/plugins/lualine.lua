@@ -6,6 +6,7 @@ return {
 			options = {
 				theme = "modus-vivendi",
 			},
+			extensions = { "fugitive", "quickfix", "neo-tree", "lazy", "mason", "nvim-dap-ui", "oil", "trouble" },
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics" },
@@ -27,6 +28,7 @@ return {
 			-- Set it to the lualine section you want to use
 			hl_group = "lualine_c_normal",
 		})
+
 		table.insert(opts.sections.lualine_c, {
 			symbols.get,
 			cond = symbols.has,
