@@ -14,7 +14,7 @@ export ZSH="$HOME/.oh-my-zsh"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 export EDITOR=vim
-
+export JAVA_HOME=$(/usr/libexec/java_home -v1.7)
 # Theme
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
@@ -96,3 +96,4 @@ alias lg="lazygit"
 # END opam configuration
 
 
+eval "$(zoxide init zsh)"
