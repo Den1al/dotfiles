@@ -30,7 +30,12 @@ return {
 				},
 			},
 		})
-		vim.api.nvim_set_keymap("n", "<C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+		vim.api.nvim_set_keymap(
+			"n",
+			"<C-c>",
+			"<cmd>CodeCompanionActions<cr>",
+			{ noremap = true, silent = true, desc = "Code Companion toggle" }
+		)
 		vim.api.nvim_set_keymap("v", "<C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 		vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
 		vim.api.nvim_set_keymap("v", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
