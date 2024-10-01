@@ -4,7 +4,7 @@ return {
   config = function()
     local opts = {
       options = {
-        theme = "tokyonight",
+        theme = "modus-vivendi",
       },
       extensions = { "fugitive", "quickfix", "neo-tree", "lazy", "mason", "nvim-dap-ui", "oil", "trouble" },
       sections = {
