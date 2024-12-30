@@ -71,6 +71,7 @@ eval "$(tmuxifier init -)"
 # Gitlab Duo
 export GITLAB_TOKEN=$(cat "$HOME/.config/gitlab-duo/key")
 export ANTHROPIC_TOKEN=$(cat "$HOME/.config/gitlab-duo/a-key")
+export ANTHROPIC_API_KEY=$(cat "$HOME/.config/gitlab-duo/a-key")
 
 
 # FZF
