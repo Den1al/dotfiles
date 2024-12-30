@@ -3,7 +3,7 @@ vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
 vim.cmd("set nu")
-
+vim.cmd("set foldcolumn=0")
 vim.cmd("set clipboard=unnamed")
 
 vim.g.mapleader = " "
@@ -17,7 +17,7 @@ vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
-vim.o.relativenumber = true
+vim.o.relativenumber = false
 
 -- Save undo history
 vim.o.undofile = true

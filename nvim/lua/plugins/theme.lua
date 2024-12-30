@@ -10,16 +10,3 @@ return {
     vim.cmd.colorscheme("catppuccin")
   end,
 }
---
---
--- return {
--- 	"folke/tokyonight.nvim",
--- 	opts = {
--- 		transparent = false,
--- 		style = "day",
--- 		styles = {
--- 			sidebars = "transparent",
--- 			floats = "transparent",
--- 		},
--- 	},
--- }
