@@ -19,6 +19,7 @@ return {
 					"pylsp",
 					"bashls",
 					"java_language_server",
+					"jinja_lsp",
 				},
 			})
 		end,
@@ -74,6 +75,8 @@ return {
 					},
 				},
 			})
+
+			lspconfig.jinja_lsp.setup({})
 
 			local nmap = function(keys, func, desc)
 				if desc then

@@ -1,47 +1,91 @@
 return {
-	"olimorris/codecompanion.nvim",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-treesitter/nvim-treesitter",
-		"nvim-telescope/telescope.nvim", -- Optional
-		{
-			"stevearc/dressing.nvim", -- Optional: Improves the default Neovim UI
-			opts = {},
-		},
-	},
-	config = function()
-		require("codecompanion").setup({
-			adapters = {
-				anthropic = require("codecompanion.adapters").use("anthropic", {
-					env = {
-						api_key = "ANTHROPIC_TOKEN",
-					},
-				}),
-			},
-			strategies = {
-				chat = {
-					adapter = "anthropic",
-				},
-				inline = {
-					adapter = "anthropic",
-				},
-				agent = {
-					adapter = "anthropic",
-				},
-			},
-		})
-		vim.api.nvim_set_keymap(
-			"n",
-			"<C-c>",
-			"<cmd>CodeCompanionActions<cr>",
-			{ noremap = true, silent = true, desc = "Code Companion toggle" }
-		)
-		vim.api.nvim_set_keymap("v", "<C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap("v", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionAdd<cr>", { noremap = true, silent = true })
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim", -- Optional
+      {
+        "stevearc/dressing.nvim",   -- Optional: Improves the default Neovim UI
+        opts = {},
+      },
+    },
+    config = function()
+      require("codecompanion").setup({
+        adapters = {
+          anthropic = require("codecompanion.adapters").use("anthropic", {
+            env = {
+              api_key = "ANTHROPIC_TOKEN",
+            },
+          }),
+        },
+        strategies = {
+          chat = {
+            adapter = "anthropic",
+          },
+          inline = {
+            adapter = "anthropic",
+          },
+          agent = {
+            adapter = "anthropic",
+          },
+        },
+      })
+      vim.api.nvim_set_keymap(
+        "n",
+        "<C-c>",
+        "<cmd>CodeCompanionActions<cr>",
+        { noremap = true, silent = true, desc = "Code Companion toggle" }
+      )
+      vim.api.nvim_set_keymap("v", "<C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("v", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionAdd<cr>", { noremap = true, silent = true })
 
-		-- Expand 'cc' into 'CodeCompanion' in the command line
-		vim.cmd([[cab cc CodeCompanion]])
-	end,
+      -- Expand 'cc' into 'CodeCompanion' in the command line
+      vim.cmd([[cab cc CodeCompanion]])
+    end,
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- set this if you want to always pull the latest change
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "hrsh7th/nvim-cmp",         -- autocompletion for avante commands and mentions
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  },
 }
