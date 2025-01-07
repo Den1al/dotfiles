@@ -1,4 +1,4 @@
-name: Test Neovim Config
+name: Neovim
 
 on:
   push:
