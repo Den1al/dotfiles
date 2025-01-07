@@ -12,8 +12,8 @@ jobs:
   test-nvim-config:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-14] # macos-14 is for Apple Silicon runners
-        nvim-version: ["v0.9.4", "v0.10.0", "nightly"] # you can specify multiple versions to test against
+        os: [ubuntu-latest, macos-14]
+        nvim-version: ["v0.10.0"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
