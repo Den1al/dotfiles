@@ -1,0 +1,54 @@
+name: Neovim
+
+on:
+  push:
+    paths:
+      - "nvim/**"
+  pull_request:
+    paths:
+      - "nvim/**"
+
+jobs:
+  test-nvim-config:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        nvim-version: ["v0.10.0"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ matrix.nvim-version }}
+
+      - name: Create Neovim config directory
+        run: |
+          mkdir -p ~/.config/nvim
+          cp -r nvim/* ~/.config/nvim/
+
+      - name: Test Neovim startup
+        run: |
+          # Try to start nvim, source the config, and quit
+          timeout 30s nvim --headless -c 'quit' 2>&1 | tee nvim_startup.log
+
+          # Check if there were any errors
+          if grep -i "error" nvim_startup.log; then
+            echo "Errors found in Neovim startup"
+            exit 1
+          fi
+
+          # Test if we can actually enter Neovim
+          timeout 30s nvim --headless -c 'echo "Config loaded successfully" | quit' || {
+            echo "Neovim failed to start properly"
+            exit 1
+          }
+
+      - name: Upload startup log if failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: nvim-startup-log
+          path: nvim_startup.log
