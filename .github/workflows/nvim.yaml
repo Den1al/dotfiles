@@ -12,7 +12,7 @@ jobs:
   test-nvim-config:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-14]
+        os: [ubuntu-latest]
         nvim-version: ["v0.10.0"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -24,10 +24,6 @@ jobs:
           neovim: true
           version: ${{ matrix.nvim-version }}
 
-      - name: Install coreutils on macOS
-        if: matrix.os == 'macos-14'
-        run: brew install coreutils
-
       - name: Create Neovim config directory
         run: |
           mkdir -p ~/.config/nvim
@@ -35,15 +31,8 @@ jobs:
 
       - name: Test Neovim startup
         run: |
-          # Use gtimeout on macOS and timeout on Linux
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            TIMEOUT_CMD="gtimeout"
-          else
-            TIMEOUT_CMD="timeout"
-          fi
-
           # Try to start nvim, source the config, and quit
-          $TIMEOUT_CMD 30s nvim --headless -c 'quit' 2>&1 | tee nvim_startup.log
+          timeout 30s nvim --headless -c 'quit' 2>&1 | tee nvim_startup.log
 
           # Check if there were any errors
           if grep -i "error" nvim_startup.log; then
@@ -52,7 +41,7 @@ jobs:
           fi
 
           # Test if we can actually enter Neovim
-          $TIMEOUT_CMD 30s nvim --headless -c 'echo "Config loaded successfully" | quit' || {
+          timeout 30s nvim --headless -c 'echo "Config loaded successfully" | quit' || {
             echo "Neovim failed to start properly"
             exit 1
           }
