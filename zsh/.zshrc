@@ -1,14 +1,6 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
-
 
 # Powerlevel1k
 source ~/powerlevel10k/powerlevel10k.zsh-theme
@@ -22,7 +14,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 zstyle ':omz:update' mode disabled  # disable automatic updates
 
 # Plugins
-plugins=(git docker pyenv golang zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(tmux git docker pyenv golang zsh-syntax-highlighting zsh-autosuggestions)
+
+
+export ZSH_TMUX_AUTOSTART=true
 
 # Add homebrew
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
