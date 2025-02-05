@@ -2,9 +2,10 @@
 
 > Current Stack
 
-- [kitty](https://github.com/kovidgoyal/kitty)
+- [ghostty](https://github.com/ghostty-org/ghostty)
 - [tmux](https://github.com/tmux)
 - [neovim](https://github.com/neovim/neovim)
+- [hammerspoon](https://www.hammerspoon.org/)
 
 ### Install with stow:
 
