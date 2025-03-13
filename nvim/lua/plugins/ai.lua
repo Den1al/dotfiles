@@ -60,6 +60,12 @@ return {
         enable_cursor_planning_mode = true,
         auto_set_keymaps = true,
       },
+      claude = {
+        model = "claude-3-7-sonnet-20250219",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 32768,
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
