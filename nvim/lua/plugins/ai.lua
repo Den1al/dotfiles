@@ -13,7 +13,7 @@ return {
     config = function()
       require("codecompanion").setup({
         adapters = {
-          anthropic = require("codecompanion.adapters").use("anthropic", {
+          anthropic = require("codecompanion.adapters").extend("anthropic", {
             env = {
               api_key = "ANTHROPIC_TOKEN",
             },
@@ -53,6 +53,13 @@ return {
     version = false, -- set this to "*" if you want to always pull the latest change, false to update on release
     opts = {
       -- add any opts here
+      provider = "claude",
+      auto_suggestion_provider = "claude",
+      behaviour = {
+        auto_suggestions = true,
+        enable_cursor_planning_mode = true,
+        auto_set_keymaps = true,
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
