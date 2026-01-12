@@ -1,6 +1,4 @@
-require("vim-options")
-require("window-resize")
-
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -14,5 +12,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Load configuration
+require("config.options")
+require("config.keymaps")
+require("config.utils.window-resize")
+
+-- Load plugins (lazy.nvim auto-discovers subdirectories)
 require("lazy").setup("plugins")
-vim.cmd("set foldcolumn=0")

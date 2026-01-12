@@ -21,7 +21,7 @@ return {
 			-- vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live Grep" })
 
 			-- this will setup <leader>fg for live grep
-			require("config.telescope.multigrep").setup()
+			require("config.utils.telescope-multigrep").setup()
 		end,
 	},
 	{
