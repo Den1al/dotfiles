@@ -31,16 +31,11 @@ return {
           },
         },
       })
-      vim.api.nvim_set_keymap(
-        "n",
-        "<C-c>",
-        "<cmd>CodeCompanionActions<cr>",
-        { noremap = true, silent = true, desc = "Code Companion toggle" }
-      )
-      vim.api.nvim_set_keymap("v", "<C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionAdd<cr>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<C-c>", "<cmd>CodeCompanionActions<cr>", { desc = "Code Companion Actions" })
+      vim.keymap.set("v", "<C-c>", "<cmd>CodeCompanionActions<cr>", { desc = "Code Companion Actions" })
+      vim.keymap.set("n", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { desc = "Code Companion Toggle" })
+      vim.keymap.set("v", "<leader>c", "<cmd>CodeCompanionToggle<cr>", { desc = "Code Companion Toggle" })
+      vim.keymap.set("v", "ga", "<cmd>CodeCompanionAdd<cr>", { desc = "Code Companion Add" })
 
       -- Expand 'cc' into 'CodeCompanion' in the command line
       vim.cmd([[cab cc CodeCompanion]])
