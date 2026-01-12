@@ -28,21 +28,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- java_language_server configuration
-      vim.lsp.config.java_language_server = {
-        cmd = { "java-language-server" },
-      }
-
-      -- lua_ls configuration
-      vim.lsp.config.lua_ls = {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
-            },
-          },
-        },
-      }
+      local lspconfig = require("lspconfig")
 
       -- Helper to find venv pylsp
       local function find_venv_pylsp()
@@ -61,8 +47,21 @@ return {
         return "pylsp" -- Fallback to system pylsp
       end
 
-      -- pylsp configuration - auto-detects venv pylsp
-      vim.lsp.config.pylsp = {
+      -- Configure LSP servers
+
+      -- Lua
+      lspconfig.lua_ls.setup({
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+          },
+        },
+      })
+
+      -- Python (auto-detects venv)
+      lspconfig.pylsp.setup({
         cmd = { find_venv_pylsp() },
         settings = {
           pylsp = {
@@ -80,29 +79,13 @@ return {
             },
           },
         },
-      }
+      })
 
-      -- marksman configuration
-      vim.lsp.config.marksman = {}
-
-      -- ts_ls configuration
-      vim.lsp.config.ts_ls = {}
-
-      -- bashls configuration
-      vim.lsp.config.bashls = {}
-
-      -- ocamllsp configuration
-      vim.lsp.config.ocamllsp = {
-        cmd = { "ocamllsp" },
-        filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
-        root_markers = { "*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace" },
-      }
-
-      -- gopls configuration
-      vim.lsp.config.gopls = {
+      -- Go
+      lspconfig.gopls.setup({
         cmd = { "gopls" },
         filetypes = { "go", "gomod", "gowork", "gotmpl" },
-        root_markers = { "go.work", "go.mod", ".git" },
+        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
         settings = {
           gopls = {
             completeUnimported = true,
@@ -112,30 +95,26 @@ return {
             },
           },
         },
-      }
+      })
 
-      -- jinja_lsp configuration
-      vim.lsp.config.jinja_lsp = {}
+      -- OCaml
+      lspconfig.ocamllsp.setup({
+        cmd = { "ocamllsp" },
+        filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
+        root_dir = lspconfig.util.root_pattern("*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace"),
+      })
 
-      -- Enable the LSP servers
-      vim.lsp.enable("java_language_server")
-      vim.lsp.enable("lua_ls")
-      vim.lsp.enable("pylsp")
-      vim.lsp.enable("marksman")
-      vim.lsp.enable("ts_ls")
-      vim.lsp.enable("bashls")
-      vim.lsp.enable("ocamllsp")
-      vim.lsp.enable("gopls")
-      vim.lsp.enable("jinja_lsp")
-
-      local nmap = function(keys, func, desc)
-        if desc then
-          desc = "LSP: " .. desc
-        end
-
-        vim.keymap.set("n", keys, func, { desc = desc })
+      -- Simple setups for servers with default config
+      local simple_servers = { "ts_ls", "bashls", "marksman", "jinja_lsp", "java_language_server", "dockerls", "golangci_lint_ls" }
+      for _, server in ipairs(simple_servers) do
+        lspconfig[server].setup({})
       end
-      -- key bindings
+
+      -- Keymaps (using consistent vim.keymap.set)
+      local nmap = function(keys, func, desc)
+        vim.keymap.set("n", keys, func, { desc = "LSP: " .. desc })
+      end
+
       nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
       nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
       nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
@@ -144,12 +123,7 @@ return {
       nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
       nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
       nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-
-      -- See `:help K` for why this keymap
       nmap("K", vim.lsp.buf.hover, "Hover documentation")
-      -- nmap("K", vim.lsp.buf.signature_help, "Signature Documentation")
-
-      -- Lesser used LSP functionality
       nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     end,
   },
