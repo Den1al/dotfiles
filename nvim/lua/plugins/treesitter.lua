@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  dependencies = { "nvim-treesitter/playground" },
   build = ":TSUpdate",
   config = function()
     local config = require("nvim-treesitter.configs")
@@ -8,5 +9,5 @@ return {
       highlight = { enable = true },
       indent = { enable = true },
     })
-  end
+  end,
 }
