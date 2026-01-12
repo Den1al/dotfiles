@@ -28,22 +28,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- java_language_server configuration
-      vim.lsp.config.java_language_server = {
-        cmd = { "java-language-server" },
-      }
-
-      -- lua_ls configuration
-      vim.lsp.config.lua_ls = {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
-            },
-          },
-        },
-      }
-
       -- Helper to find venv pylsp
       local function find_venv_pylsp()
         local root = vim.fn.getcwd()
@@ -60,6 +44,24 @@ return {
         end
         return "pylsp" -- Fallback to system pylsp
       end
+
+      -- Configure LSP servers using NeoVim 0.11+ vim.lsp.config API
+
+      -- java_language_server configuration
+      vim.lsp.config.java_language_server = {
+        cmd = { "java-language-server" },
+      }
+
+      -- lua_ls configuration
+      vim.lsp.config.lua_ls = {
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+          },
+        },
+      }
 
       -- pylsp configuration - auto-detects venv pylsp
       vim.lsp.config.pylsp = {
@@ -117,6 +119,12 @@ return {
       -- jinja_lsp configuration
       vim.lsp.config.jinja_lsp = {}
 
+      -- dockerls configuration
+      vim.lsp.config.dockerls = {}
+
+      -- golangci_lint_ls configuration
+      vim.lsp.config.golangci_lint_ls = {}
+
       -- Enable the LSP servers
       vim.lsp.enable("java_language_server")
       vim.lsp.enable("lua_ls")
@@ -127,15 +135,14 @@ return {
       vim.lsp.enable("ocamllsp")
       vim.lsp.enable("gopls")
       vim.lsp.enable("jinja_lsp")
+      vim.lsp.enable("dockerls")
+      vim.lsp.enable("golangci_lint_ls")
 
+      -- Keymaps (using consistent vim.keymap.set)
       local nmap = function(keys, func, desc)
-        if desc then
-          desc = "LSP: " .. desc
-        end
-
-        vim.keymap.set("n", keys, func, { desc = desc })
+        vim.keymap.set("n", keys, func, { desc = "LSP: " .. desc })
       end
-      -- key bindings
+
       nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
       nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
       nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
@@ -144,12 +151,7 @@ return {
       nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
       nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
       nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-
-      -- See `:help K` for why this keymap
       nmap("K", vim.lsp.buf.hover, "Hover documentation")
-      -- nmap("K", vim.lsp.buf.signature_help, "Signature Documentation")
-
-      -- Lesser used LSP functionality
       nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     end,
   },
