@@ -1,20 +1,24 @@
-
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Powerlevel1k
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+export EDITOR=/opt/homebrew/bin/nvim
+export PATH="$PATH:$HOME/scripts:$HOME/.lmstudio/bin"
 
-export EDITOR=vim
-export JAVA_HOME=$(/usr/libexec/java_home -v1.7)
+# Docker CLI completions (fpath must be set before compinit/OMZ)
+fpath=($HOME/.docker/completions $fpath)
+
+# Lazy Java home - only set if java_home exists
+if [[ -x /usr/libexec/java_home ]]; then
+  export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
+fi
 # Theme
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Disable automatic updates
 zstyle ':omz:update' mode disabled  # disable automatic updates
 
-# Plugins
-plugins=(tmux git docker pyenv golang zsh-syntax-highlighting zsh-autosuggestions)
+# Plugins (pyenv removed - manually initialized below)
+plugins=(tmux git docker golang zsh-autosuggestions zsh-syntax-highlighting)
 
 
 export ZSH_TMUX_AUTOSTART=true
@@ -59,14 +63,17 @@ alias ll='eza -l -F=always --color=always --icons=always --all --octal-permissio
 alias l='eza -l -F=always --color=always --icons=always --all --octal-permissions --git'
 
 
-# Tmuxifier
+# Tmuxifier (lazy-loaded - only init when first used)
 export PATH="$HOME/.tmuxifier/bin:$PATH"
-eval "$(tmuxifier init -)"
+tmuxifier() {
+  unfunction tmuxifier
+  eval "$(command tmuxifier init -)"
+  tmuxifier "$@"
+}
 
-# Gitlab Duo
-export GITLAB_TOKEN=$(cat "$HOME/.config/gitlab-duo/key")
-export ANTHROPIC_TOKEN=$(cat "$HOME/.config/gitlab-duo/a-key")
-export ANTHROPIC_API_KEY=$(cat "$HOME/.config/gitlab-duo/a-key")
+# Gitlab Duo (use zsh native file reading, avoid cat subshells)
+[[ -r "$HOME/.config/gitlab-duo/key" ]] && export GITLAB_TOKEN=$(<"$HOME/.config/gitlab-duo/key")
+[[ -r "$HOME/.config/gitlab-duo/a-key" ]] && export ANTHROPIC_TOKEN=$(<"$HOME/.config/gitlab-duo/a-key") ANTHROPIC_API_KEY=$(<"$HOME/.config/gitlab-duo/a-key")
 
 
 # FZF
@@ -83,13 +90,14 @@ alias lg="lazygit"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-# BEGIN opam configuration
-# This is useful if you're using opam as it adds:
-#   - the correct directories to the PATH
-#   - auto-completion for the opam binary
-# This section can be safely removed at any time if needed.
-[[ ! -r '$HOME/.opam/opam-init/init.zsh' ]] || source '$HOME/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
-# END opam configuration
+# opam configuration (OCaml)
+[[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 
-
+# zoxide (smart cd)
 eval "$(zoxide init zsh)"
+
+# mise (runtime version manager) - replaces asdf/pyenv for some tools
+eval "$(/opt/homebrew/bin/mise activate zsh)"
+
+# Local bin
+[[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
