@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Load configuration
 require("config.options")
 require("config.keymaps")
+require("config.autocmds")
 require("config.utils.window-resize")
 
 -- Load plugins (lazy.nvim auto-discovers subdirectories)
