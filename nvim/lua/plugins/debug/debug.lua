@@ -7,6 +7,18 @@ return {
       "nvim-neotest/nvim-nio",
       "williamboman/mason.nvim",
     },
+    keys = {
+      { "<space>b", desc = "Toggle Breakpoint" },
+      { "<space>B", desc = "Conditional Breakpoint" },
+      { "<space>gb", desc = "Run to Cursor" },
+      { "<space>?", desc = "Eval Under Cursor" },
+      { "<F1>", desc = "Continue" },
+      { "<F2>", desc = "Step Into" },
+      { "<F3>", desc = "Step Over" },
+      { "<F4>", desc = "Step Out" },
+      { "<F5>", desc = "Step Back" },
+      { "<F13>", desc = "Restart" },
+    },
     config = function()
       local dap = require("dap")
       local ui = require("dapui")

@@ -1,6 +1,7 @@
 return {
   "kevinhwang91/nvim-ufo",
   dependencies = "kevinhwang91/promise-async",
+  event = { "BufReadPost", "BufNewFile" },
   config = function()
     vim.o.foldcolumn = "1" -- '0' is not bad
     vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
@@ -18,7 +19,8 @@ return {
 
     require("ufo").setup({
       provider_selector = function(bufnr, filetype, buftype)
-        return { "lsp", "indent" }
+        -- Use treesitter for most files, indent as fallback (faster than LSP)
+        return { "treesitter", "indent" }
       end,
     })
   end,

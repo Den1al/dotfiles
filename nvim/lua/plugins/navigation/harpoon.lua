@@ -71,7 +71,7 @@ return {
 
     return {
       {
-        "<leader>ft",
+        "<leader>fh",
         function()
           toggle_telescope(harpoon:list())
         end,
