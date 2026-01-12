@@ -19,7 +19,8 @@ return {
 
     require("ufo").setup({
       provider_selector = function(bufnr, filetype, buftype)
-        return { "lsp", "indent" }
+        -- Use treesitter for most files, indent as fallback (faster than LSP)
+        return { "treesitter", "indent" }
       end,
     })
   end,
