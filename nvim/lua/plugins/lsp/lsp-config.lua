@@ -28,8 +28,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
-
       -- Helper to find venv pylsp
       local function find_venv_pylsp()
         local root = vim.fn.getcwd()
@@ -47,10 +45,15 @@ return {
         return "pylsp" -- Fallback to system pylsp
       end
 
-      -- Configure LSP servers
+      -- Configure LSP servers using NeoVim 0.11+ vim.lsp.config API
 
-      -- Lua
-      lspconfig.lua_ls.setup({
+      -- java_language_server configuration
+      vim.lsp.config.java_language_server = {
+        cmd = { "java-language-server" },
+      }
+
+      -- lua_ls configuration
+      vim.lsp.config.lua_ls = {
         settings = {
           Lua = {
             diagnostics = {
@@ -58,10 +61,10 @@ return {
             },
           },
         },
-      })
+      }
 
-      -- Python (auto-detects venv)
-      lspconfig.pylsp.setup({
+      -- pylsp configuration - auto-detects venv pylsp
+      vim.lsp.config.pylsp = {
         cmd = { find_venv_pylsp() },
         settings = {
           pylsp = {
@@ -79,13 +82,29 @@ return {
             },
           },
         },
-      })
+      }
 
-      -- Go
-      lspconfig.gopls.setup({
+      -- marksman configuration
+      vim.lsp.config.marksman = {}
+
+      -- ts_ls configuration
+      vim.lsp.config.ts_ls = {}
+
+      -- bashls configuration
+      vim.lsp.config.bashls = {}
+
+      -- ocamllsp configuration
+      vim.lsp.config.ocamllsp = {
+        cmd = { "ocamllsp" },
+        filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
+        root_markers = { "*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace" },
+      }
+
+      -- gopls configuration
+      vim.lsp.config.gopls = {
         cmd = { "gopls" },
         filetypes = { "go", "gomod", "gowork", "gotmpl" },
-        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+        root_markers = { "go.work", "go.mod", ".git" },
         settings = {
           gopls = {
             completeUnimported = true,
@@ -95,20 +114,29 @@ return {
             },
           },
         },
-      })
+      }
 
-      -- OCaml
-      lspconfig.ocamllsp.setup({
-        cmd = { "ocamllsp" },
-        filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
-        root_dir = lspconfig.util.root_pattern("*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace"),
-      })
+      -- jinja_lsp configuration
+      vim.lsp.config.jinja_lsp = {}
 
-      -- Simple setups for servers with default config
-      local simple_servers = { "ts_ls", "bashls", "marksman", "jinja_lsp", "java_language_server", "dockerls", "golangci_lint_ls" }
-      for _, server in ipairs(simple_servers) do
-        lspconfig[server].setup({})
-      end
+      -- dockerls configuration
+      vim.lsp.config.dockerls = {}
+
+      -- golangci_lint_ls configuration
+      vim.lsp.config.golangci_lint_ls = {}
+
+      -- Enable the LSP servers
+      vim.lsp.enable("java_language_server")
+      vim.lsp.enable("lua_ls")
+      vim.lsp.enable("pylsp")
+      vim.lsp.enable("marksman")
+      vim.lsp.enable("ts_ls")
+      vim.lsp.enable("bashls")
+      vim.lsp.enable("ocamllsp")
+      vim.lsp.enable("gopls")
+      vim.lsp.enable("jinja_lsp")
+      vim.lsp.enable("dockerls")
+      vim.lsp.enable("golangci_lint_ls")
 
       -- Keymaps (using consistent vim.keymap.set)
       local nmap = function(keys, func, desc)

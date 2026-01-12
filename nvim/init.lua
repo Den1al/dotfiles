@@ -19,4 +19,16 @@ require("config.autocmds")
 require("config.utils.window-resize")
 
 -- Load plugins (lazy.nvim auto-discovers subdirectories)
-require("lazy").setup("plugins")
+require("lazy").setup({
+  spec = {
+    { import = "plugins.lsp" },
+    { import = "plugins.ui" },
+    { import = "plugins.editor" },
+    { import = "plugins.navigation" },
+    { import = "plugins.git" },
+    { import = "plugins.ai" },
+    { import = "plugins.debug" },
+    { import = "plugins.tools" },
+    { import = "plugins.terminal" },
+  },
+})
