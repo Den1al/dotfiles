@@ -1,16 +1,21 @@
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=2")
-vim.cmd("set softtabstop=2")
-vim.cmd("set shiftwidth=2")
-vim.cmd("set nu")
-vim.cmd("set foldcolumn=0")
-vim.cmd("set clipboard=unnamed")
+-- Indentation
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
 
+-- UI
+vim.opt.number = true
+vim.opt.foldcolumn = "0"
+vim.opt.clipboard = "unnamed"
+
+-- Leader key
 vim.g.mapleader = " "
 
-vim.api.nvim_set_keymap("n", "ss", ":noh<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "E", "$", { noremap = false })
-vim.api.nvim_set_keymap("n", "B", "^", { noremap = false })
+-- Keymaps
+vim.keymap.set("n", "ss", ":noh<CR>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "E", "$", { desc = "Jump to end of line" })
+vim.keymap.set("n", "B", "^", { desc = "Jump to beginning of line" })
 
 -- Set highlight on search
 vim.o.hlsearch = true
