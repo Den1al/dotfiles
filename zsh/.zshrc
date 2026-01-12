@@ -14,7 +14,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 zstyle ':omz:update' mode disabled  # disable automatic updates
 
 # Plugins
-plugins=(tmux git docker pyenv golang zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(tmux git docker pyenv golang zsh-syntax-highlighting zsh-autosuggestions poetry)
 
 
 export ZSH_TMUX_AUTOSTART=true
@@ -26,7 +26,10 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 source $ZSH/oh-my-zsh.sh
 
 # Enable ASDF
-source "$HOME/.asdf/asdf.sh"
+# source "$HOME/.asdf/asdf.sh"
+
+# Enable MISE
+eval "$(mise activate zsh)"
 
 # Enable pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -34,15 +37,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 
 # Enable golang
-export GOPATH=$(asdf where golang)/packages
-export GOROOT=$(asdf where golang)/go
-export PATH="${PATH}:$(go env GOPATH)/bin"
 export GDK_HOME="$HOME/repos/gitlab-development-kit"
-
-## GitLab Runner
-alias gitlab-runner-start="docker run  -d --name gitlab-runner --add-host gdk.test:172.16.123.1 -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/repos/gitlab-development-kit/tmp/gitlab-runner:/etc/gitlab-runner gitlab/gitlab-runner"
-alias gitlab-runner-stop="docker stop gitlab-runner && docker rm gitlab-runner"
-# alias gitlab-runner="docker run --rm -it --add-host gdk.test:172.16.123.1 -v $GDK_HOME/tmp/gitlab-runner:/etc/gitlab-runner gitlab/gitlab-runner"
 
 # TMUX
 alias tm="$HOME/.config/wezterm/start-tmux.sh"
@@ -91,5 +86,10 @@ alias lg="lazygit"
 [[ ! -r '$HOME/.opam/opam-init/init.zsh' ]] || source '$HOME/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
+alias lala='ssh -t hstgr "cd ~/mgmt; tree . -L 2; zsh --login;"'
+alias lala2='ssh -t hstgr-big'
+alias sp="python -c 'import site;print(\"\n\".join(site.getsitepackages()))'"
 
 eval "$(zoxide init zsh)"
+
+

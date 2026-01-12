@@ -6,24 +6,25 @@
 -- hotkey is cmd+alt
 local hk_leader = { "cmd", "alt" }
 local hk_mapping = {
-	["Ghostty"] = "T", -- terminal
-	["Arc"] = "B", -- browser
-	["Slack"] = "S", -- slack
-	["Spotify"] = "M", -- music
-	["zoom.us"] = "Z", -- zoom
-	["System Settings"] = ",", -- settings
+  ["Ghostty"] = "T",        -- terminal
+  ["Arc"] = "B",            -- browser
+  ["Slack"] = "S",          -- slack
+  ["Spotify"] = "M",        -- music
+  ["zoom.us"] = "Z",        -- zoom
+  ["Docker Desktop"] = "C", -- container client
+  ["System Settings"] = ",", -- settings
 }
 
 -- bind each hotkey to its' app
 for appName, hotKey in pairs(hk_mapping) do
-	hs.hotkey.bind(hk_leader, hotKey, function()
-		hs.application.launchOrFocus(appName)
-	end)
+  hs.hotkey.bind(hk_leader, hotKey, function()
+    hs.application.launchOrFocus(appName)
+  end)
 end
 
 -- this will reload the config on alt+R
 hs.hotkey.bind({ "alt" }, "R", function()
-	hs.reload()
+  hs.reload()
 end)
 
 hs.alert.show("🔮 Config loaded")
