@@ -26,7 +26,7 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 source $ZSH/oh-my-zsh.sh
 
 # Enable ASDF
-source "$HOME/.asdf/asdf.sh"
+# source "$HOME/.asdf/asdf.sh"
 
 # Enable pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -34,10 +34,10 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 
 # Enable golang
-export GOPATH=$(asdf where golang)/packages
-export GOROOT=$(asdf where golang)/go
-export PATH="${PATH}:$(go env GOPATH)/bin"
-export GDK_HOME="$HOME/repos/gitlab-development-kit"
+# export GOPATH=$(asdf where golang)/packages
+# export GOROOT=$(asdf where golang)/go
+# export PATH="${PATH}:$(go env GOPATH)/bin"
+# export GDK_HOME="$HOME/repos/gitlab-development-kit"
 
 ## GitLab Runner
 alias gitlab-runner-start="docker run  -d --name gitlab-runner --add-host gdk.test:172.16.123.1 -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/repos/gitlab-development-kit/tmp/gitlab-runner:/etc/gitlab-runner gitlab/gitlab-runner"
