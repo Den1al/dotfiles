@@ -74,7 +74,7 @@ tmuxifier() {
 
 # Gitlab Duo (use zsh native file reading, avoid cat subshells)
 [[ -r "$HOME/.config/gitlab-duo/key" ]] && export GITLAB_TOKEN=$(<"$HOME/.config/gitlab-duo/key")
-[[ -r "$HOME/.config/gitlab-duo/a-key" ]] && export ANTHROPIC_TOKEN=$(<"$HOME/.config/gitlab-duo/a-key") ANTHROPIC_API_KEY=$(<"$HOME/.config/gitlab-duo/a-key")
+[[ -r "$HOME/.config/gitlab-duo/a-key" ]] && export ANTHROPIC_TOKEN=$(<"$HOME/.config/gitlab-duo/a-key") && export ANTHROPIC_API_KEY=$(<"$HOME/.config/gitlab-duo/a-key")
 
 
 # FZF

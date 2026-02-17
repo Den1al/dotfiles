@@ -27,7 +27,13 @@ hs.hotkey.bind({ "alt" }, "R", function()
 end)
 
 hs.loadSpoon("ClaudeRewriter")
-spoon.ClaudeRewriter.model = "sonnet"
+
+local f = io.open(os.getenv("HOME") .. "/.config/gitlab-duo/a-key", "r")
+if f then
+	spoon.ClaudeRewriter.apiKey = f:read("*l")
+	f:close()
+end
+
 spoon.ClaudeRewriter:bindHotkeys({
 	rewrite = { { "alt" }, "c" },
 	clipboard = { { "alt", "shift" }, "c" },
