@@ -27,7 +27,9 @@ hs.hotkey.bind({ "alt" }, "R", function()
 end)
 
 hs.loadSpoon("ClaudeRewriter")
-spoon.ClaudeRewriter.model = "sonnet"
+
+spoon.ClaudeRewriter.apiKey = os.getenv("ANTHROPIC_API_KEY")
+
 spoon.ClaudeRewriter:bindHotkeys({
 	rewrite = { { "alt" }, "c" },
 	clipboard = { { "alt", "shift" }, "c" },

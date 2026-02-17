@@ -74,7 +74,9 @@ tmuxifier() {
 
 # Gitlab Duo (use zsh native file reading, avoid cat subshells)
 [[ -r "$HOME/.config/gitlab-duo/key" ]] && export GITLAB_TOKEN=$(<"$HOME/.config/gitlab-duo/key")
-[[ -r "$HOME/.config/gitlab-duo/a-key" ]] && export ANTHROPIC_TOKEN=$(<"$HOME/.config/gitlab-duo/a-key") ANTHROPIC_API_KEY=$(<"$HOME/.config/gitlab-duo/a-key")
+[[ -r "$HOME/.config/gitlab-duo/a-key" ]] && export ANTHROPIC_TOKEN=$(<"$HOME/.config/gitlab-duo/a-key") && export ANTHROPIC_API_KEY=$(<"$HOME/.config/gitlab-duo/a-key")
+# Propagate to launchd so GUI apps (e.g. Hammerspoon) can access it via os.getenv
+[[ -n "$ANTHROPIC_API_KEY" ]] && launchctl setenv ANTHROPIC_API_KEY "$ANTHROPIC_API_KEY"
 
 
 # FZF

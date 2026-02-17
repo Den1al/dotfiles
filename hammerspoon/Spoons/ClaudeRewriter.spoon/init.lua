@@ -7,11 +7,16 @@ obj.author = "Daniel Abeles"
 obj.homepage = "https://github.com/Den1al/dotfiles"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
-obj.claudePath = os.getenv("HOME") .. "/.local/bin/claude"
-obj.model = "sonnet"
+-- Note: Hammerspoon is a GUI app and won't see shell env vars by default.
+-- Use `launchctl setenv ANTHROPIC_API_KEY <value>` in your shell config
+-- to propagate it to launchd so os.getenv() works here.
+obj.apiKey = nil
+obj.model = "claude-sonnet-4-5"
 obj.systemPrompt =
-	"Rewrite the following text for clarity and correct grammar. Preserve the original tone, intent, and meaning. Return ONLY the rewritten text with no preamble or explanation. Don't use emdashes."
+	"Rewrite the following text for clarity and correct grammar. Preserve the original tone, intent, and meaning. Return ONLY the rewritten text with no preamble or explanation. DONT use emdashes."
 obj.alertDuration = 1.5
+
+local API_URL = "https://api.anthropic.com/v1/messages"
 
 local hotkeys = {}
 local rewriting = false
@@ -66,8 +71,8 @@ function obj:rewrite(pasteInPlace)
 		return
 	end
 
-	if not hs.fs.attributes(self.claudePath) then
-		hs.alert.show("Claude CLI not found", self.alertDuration)
+	if not self.apiKey or self.apiKey == "" then
+		hs.alert.show("API key not set", self.alertDuration)
 		return
 	end
 
@@ -75,27 +80,37 @@ function obj:rewrite(pasteInPlace)
 	local savedClipboard = hs.pasteboard.readAllData()
 	local progressAlert = hs.alert.show("Rewriting...", 30)
 
-	local args = {
-		"-p",
-		selected,
-		"--model",
-		self.model,
-		"--output-format",
-		"text",
-		"--system-prompt",
-		self.systemPrompt,
+	local headers = {
+		["x-api-key"] = self.apiKey,
+		["anthropic-version"] = "2023-06-01",
+		["content-type"] = "application/json",
 	}
 
-	local task = hs.task.new(self.claudePath, function(exitCode, stdout, stderr)
+	local body = hs.json.encode({
+		model = self.model,
+		max_tokens = 4096,
+		system = self.systemPrompt,
+		messages = {
+			{ role = "user", content = selected },
+		},
+	})
+
+	hs.http.asyncPost(API_URL, body, headers, function(status, responseBody)
 		hs.alert.closeSpecific(progressAlert)
 		rewriting = false
 
-		if exitCode ~= 0 then
-			hs.alert.show("Rewrite failed", self.alertDuration)
+		if status ~= 200 then
+			hs.alert.show("Rewrite failed (HTTP " .. tostring(status) .. ")", self.alertDuration)
 			return
 		end
 
-		local result = stdout and stdout:gsub("^%s+", ""):gsub("%s+$", "") or ""
+		local ok, response = pcall(hs.json.decode, responseBody)
+		if not ok or not response or not response.content or #response.content == 0 then
+			hs.alert.show("Failed to parse response", self.alertDuration)
+			return
+		end
+
+		local result = (response.content[1].text or ""):gsub("^%s+", ""):gsub("%s+$", "")
 		if result == "" then
 			hs.alert.show("Empty response", self.alertDuration)
 			return
@@ -112,9 +127,7 @@ function obj:rewrite(pasteInPlace)
 		else
 			hs.alert.show("Copied to clipboard", self.alertDuration)
 		end
-	end, args)
-
-	task:start()
+	end)
 end
 
 return obj
