@@ -7,6 +7,9 @@ obj.author = "Daniel Abeles"
 obj.homepage = "https://github.com/Den1al/dotfiles"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
+-- Note: Hammerspoon is a GUI app and won't see shell env vars by default.
+-- Use `launchctl setenv ANTHROPIC_API_KEY <value>` in your shell config
+-- to propagate it to launchd so os.getenv() works here.
 obj.apiKey = nil
 obj.model = "claude-sonnet-4-5"
 obj.systemPrompt =
