@@ -28,7 +28,11 @@ end)
 
 hs.loadSpoon("ClaudeRewriter")
 
-spoon.ClaudeRewriter.apiKey = os.getenv("ANTHROPIC_API_KEY")
+local f = io.open(os.getenv("HOME") .. "/.config/gitlab-duo/a-key", "r")
+if f then
+	spoon.ClaudeRewriter.apiKey = f:read("*l")
+	f:close()
+end
 
 spoon.ClaudeRewriter:bindHotkeys({
 	rewrite = { { "alt" }, "c" },
