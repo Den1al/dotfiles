@@ -15,6 +15,7 @@ obj.model = "claude-sonnet-4-5"
 obj.systemPrompt =
 	"Rewrite the following text for clarity and correct grammar. Preserve the original tone, intent, and meaning. Return ONLY the rewritten text with no preamble or explanation. DONT use emdashes. Use emojies to express gratitude, but avoid face emojies, only symbols."
 obj.alertDuration = 1.5
+obj.promptsPath = nil -- set externally; defaults to spoon's prompts/ dir
 
 local API_URL = "https://api.anthropic.com/v1/messages"
 
@@ -30,6 +31,56 @@ local function getSelectedText()
 	return focusedElement:attributeValue("AXSelectedText")
 end
 
+local function parseFrontMatter(content)
+	local frontMatter, body = content:match("^%-%-%-\n(.-)\n%-%-%-\n(.*)$")
+	if not frontMatter then
+		return nil, content
+	end
+	local meta = {}
+	for line in frontMatter:gmatch("[^\n]+") do
+		local key, value = line:match("^(%w+):%s*(.+)$")
+		if key then
+			if tonumber(value) then
+				meta[key] = tonumber(value)
+			else
+				meta[key] = value
+			end
+		end
+	end
+	return meta, body:gsub("^%s+", ""):gsub("%s+$", "")
+end
+
+local function loadPrompts(dir)
+	local prompts = {}
+	local files = {}
+	local iter, dirObj = hs.fs.dir(dir)
+	if not iter then
+		return prompts
+	end
+	for file in iter, dirObj do
+		if file:match("%.md$") then
+			files[#files + 1] = file
+		end
+	end
+	table.sort(files)
+	for _, file in ipairs(files) do
+		local path = dir .. "/" .. file
+		local f = io.open(path, "r")
+		if f then
+			local content = f:read("*a")
+			f:close()
+			local meta, body = parseFrontMatter(content)
+			if meta and meta.title and body ~= "" then
+				prompts[#prompts + 1] = {
+					title = meta.title,
+					prompt = body,
+				}
+			end
+		end
+	end
+	return prompts
+end
+
 function obj:init()
 	return self
 end
@@ -37,10 +88,19 @@ end
 function obj:bindHotkeys(mapping)
 	for action, bind in pairs(mapping) do
 		local mods, key = bind[1], bind[2]
-		local paste = action == "rewrite"
-		hotkeys[#hotkeys + 1] = hs.hotkey.new(mods, key, function()
-			self:rewrite(paste)
-		end)
+		if action == "rewrite" then
+			hotkeys[#hotkeys + 1] = hs.hotkey.new(mods, key, function()
+				self:rewrite(true)
+			end)
+		elseif action == "clipboard" then
+			hotkeys[#hotkeys + 1] = hs.hotkey.new(mods, key, function()
+				self:rewrite(false)
+			end)
+		elseif action == "menu" then
+			hotkeys[#hotkeys + 1] = hs.hotkey.new(mods, key, function()
+				self:showMenu()
+			end)
+		end
 	end
 	return self
 end
@@ -59,7 +119,36 @@ function obj:stop()
 	return self
 end
 
-function obj:rewrite(pasteInPlace)
+function obj:showMenu()
+	local selected = getSelectedText()
+	if not selected or selected == "" then
+		hs.alert.show("No text selected", self.alertDuration)
+		return
+	end
+
+	local dir = self.promptsPath or (hs.spoons.scriptPath() .. "/prompts")
+	local prompts = loadPrompts(dir)
+	if #prompts == 0 then
+		hs.alert.show("No prompts found in " .. dir, self.alertDuration)
+		return
+	end
+
+	local menuItems = {}
+	for _, p in ipairs(prompts) do
+		menuItems[#menuItems + 1] = {
+			title = p.title,
+			fn = function()
+				self:rewrite(true, p.prompt)
+			end,
+		}
+	end
+
+	local menu = hs.menubar.new(false)
+	menu:setMenu(menuItems)
+	menu:popupMenu(hs.mouse.absolutePosition())
+end
+
+function obj:rewrite(pasteInPlace, promptOverride)
 	if rewriting then
 		hs.alert.show("Rewrite in progress", self.alertDuration)
 		return
@@ -89,7 +178,7 @@ function obj:rewrite(pasteInPlace)
 	local body = hs.json.encode({
 		model = self.model,
 		max_tokens = 4096,
-		system = self.systemPrompt,
+		system = promptOverride or self.systemPrompt,
 		messages = {
 			{ role = "user", content = selected },
 		},

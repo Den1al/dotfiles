@@ -36,7 +36,7 @@ end
 
 spoon.ClaudeRewriter:bindHotkeys({
 	rewrite = { { "alt" }, "c" },
-	clipboard = { { "alt", "shift" }, "c" },
+	menu = { { "alt", "shift" }, "c" },
 }):start()
 
 hs.alert.show("🔮 Config loaded")
