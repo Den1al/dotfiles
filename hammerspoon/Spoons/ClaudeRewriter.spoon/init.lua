@@ -13,7 +13,7 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 obj.apiKey = nil
 obj.model = "claude-sonnet-4-5"
 obj.systemPrompt =
-	"Rewrite the following text for clarity and correct grammar. Preserve the original tone, intent, and meaning. Return ONLY the rewritten text with no preamble or explanation. DONT use emdashes."
+	"Rewrite the following text for clarity and correct grammar. Preserve the original tone, intent, and meaning. Return ONLY the rewritten text with no preamble or explanation. DONT use emdashes. Use emojies to express gratitude, but avoid face emojies, only symbols."
 obj.alertDuration = 1.5
 
 local API_URL = "https://api.anthropic.com/v1/messages"
