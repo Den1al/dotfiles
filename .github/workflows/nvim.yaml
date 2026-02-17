@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        nvim-version: ["v0.11.0"]
+        nvim-version: ["v0.11.5"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -34,8 +34,9 @@ jobs:
           # Try to start nvim, source the config, and quit
           timeout 30s nvim --headless -c 'quit' 2>&1 | tee nvim_startup.log
 
-          # Check if there were any errors
-          if grep -i "error" nvim_startup.log; then
+          # Check for actual Neovim errors (E123: style or "Error detected" messages)
+          # Excludes false positives from plugin git output containing "error" in commit messages
+          if grep -P "^E\d+:|^Error|error:" nvim_startup.log; then
             echo "Errors found in Neovim startup"
             exit 1
           fi

@@ -53,12 +53,13 @@ alias tm="$HOME/.config/wezterm/start-tmux.sh"
 
 # NVIM
 alias vim=nvim
+alias v=nvim
 
 # Rust
 . "$HOME/.cargo/env"
 
 
-# Eza 
+# Eza
 alias ll='eza -l -F=always --color=always --icons=always --all --octal-permissions --git --sort=modified --reverse'
 alias l='eza -l -F=always --color=always --icons=always --all --octal-permissions --git'
 
@@ -86,7 +87,7 @@ alias oo="cd '$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Second
 alias lg="lazygit"
 
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh. 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
@@ -98,6 +99,10 @@ eval "$(zoxide init zsh)"
 
 # mise (runtime version manager) - replaces asdf/pyenv for some tools
 eval "$(/opt/homebrew/bin/mise activate zsh)"
+
+# claude
+alias claude="~/.claude/local/claude"
+alias cc="claude --dangerously-skip-permissions"
 
 # Local bin
 [[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"

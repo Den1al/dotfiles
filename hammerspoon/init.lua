@@ -26,4 +26,11 @@ hs.hotkey.bind({ "alt" }, "R", function()
 	hs.reload()
 end)
 
+hs.loadSpoon("ClaudeRewriter")
+spoon.ClaudeRewriter.model = "sonnet"
+spoon.ClaudeRewriter:bindHotkeys({
+	rewrite = { { "alt" }, "c" },
+	clipboard = { { "alt", "shift" }, "c" },
+}):start()
+
 hs.alert.show("🔮 Config loaded")
